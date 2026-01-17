@@ -55,3 +55,8 @@ add_time = time.time() - init_time
 print(f"Loop time: {loop_time}")
 print(f"Add time: {add_time}")
 
+# Define and populate y vector
+y = z[np.where((z > 0) & (z < 0.8))]
+print(f"Y Array: {y}")
+print(f"Retrieved {y.shape} elements")
+
