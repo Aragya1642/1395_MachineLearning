@@ -90,8 +90,18 @@ print(f"Sum of all elements: {a.sum()}")
 b = np.square(a)
 print(f"B Array: {b}")
 
+# Verification of square
 if (b[0,1] == a[0,1]**2):
     print("B[0,1] is the square of A[0,1]")
 else:
     print("Failed match")
+
+# Solve system of equations
+a = np.array([[2,5,-2],
+              [2,6,4],
+              [6,8,18]])
+b = np.array([D,6,15])
+a_inv = np.linalg.inv(a)
+x = a_inv @ b
+print(f"[x, y, z] = {x}")
 
