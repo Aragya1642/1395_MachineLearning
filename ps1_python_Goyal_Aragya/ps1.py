@@ -6,7 +6,9 @@ import time
 # Constants
 D = 58.0
 
+######################################################
 ## Question 2 ##
+print("## Question 2 ##")
 # Calculate mean and std dev.
 mean = 2.0 + (D/100)
 stddev = 0.5 + (D/200)
@@ -61,7 +63,9 @@ y = z[np.where((z > 0) & (z < 0.8))]
 print(f"Y Array: {y}")
 print(f"Retrieved {y.shape} elements")
 
+######################################################
 ## Question 3 ##
+print("\n\n## Question 3 ##")
 # Define matrix A
 a = np.array([[2, 10, 8],
               [3, 5, 2],
@@ -105,3 +109,14 @@ a_inv = np.linalg.inv(a)
 x = a_inv @ b
 print(f"[x, y, z] = {x}")
 
+######################################################
+## Question 4 ##
+print("\n\n## Question 4 ##")
+# Create matrix x
+i = np.arange(10)
+x = np.column_stack((i, i**2, i*D))
+print(f"X Array: {x}")
+
+# Create matrix y
+y = (3*i) + D
+print(f"Y Array: {y}")
