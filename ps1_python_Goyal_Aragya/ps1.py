@@ -6,6 +6,7 @@ import time
 # Constants
 D = 58.0
 
+## Question 2 ##
 # Calculate mean and std dev.
 mean = 2.0 + (D/100)
 stddev = 0.5 + (D/200)
@@ -59,4 +60,38 @@ print(f"Add time: {add_time}")
 y = z[np.where((z > 0) & (z < 0.8))]
 print(f"Y Array: {y}")
 print(f"Retrieved {y.shape} elements")
+
+## Question 3 ##
+# Define matrix A
+a = np.array([[2, 10, 8],
+              [3, 5, 2],
+              [6, 4, 4]])
+print(f"A Array: {a}")
+
+# Find column minimums
+column_mins = a.min(axis=0) # axis=0=columns, axis=1=rows
+print(f"Column Minimums: {column_mins}")
+
+# Find row maximums
+row_maxs = a.max(axis=1)
+print(f"Row Maxiumums: {row_maxs}")
+
+# Find smallest value in the matrix
+print(f"Full matrix minimum: {a.min()}")
+
+# Sum each row
+a_sums = a.sum(axis=1)
+print(f"Row sums: {a_sums}")
+
+# Sum all elements
+print(f"Sum of all elements: {a.sum()}")
+
+# Define matrix B
+b = np.square(a)
+print(f"B Array: {b}")
+
+if (b[0,1] == a[0,1]**2):
+    print("B[0,1] is the square of A[0,1]")
+else:
+    print("Failed match")
 
