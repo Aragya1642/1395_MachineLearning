@@ -120,3 +120,23 @@ print(f"X Array: {x}")
 # Create matrix y
 y = (3*i) + D
 print(f"Y Array: {y}")
+
+# Shuffle row indices
+np.random.seed(21) # Use this for repeatability
+row_indices = np.random.permutation(x.shape[0])
+x_shuffled = x[row_indices]
+y_shuffled = y[row_indices]
+
+# Split into x_train and x_test
+x_train = x_shuffled[:8]
+x_test = x_shuffled[8:]
+
+# Split into y_train and y_test
+y_train = y_shuffled[:8]
+y_test = y_shuffled[8:]
+
+# Print out matrices
+print(f"X Training: {x_train}")
+print(f"X Testing: {x_test}")
+print(f"Y Training: {y_train}")
+print(f"y Testing: {y_test}")
