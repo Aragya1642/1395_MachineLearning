@@ -21,9 +21,10 @@ low_bound = -(D/50.0)
 high_bound = D/100.0
 z = np.random.uniform(low_bound, high_bound, (1000000,1))
 
-# Print arrays
+# Print arrays and information
 print(f"X Array: {x}")
 print(f"Z Array: {z}")
+print(f"X mean: {sum(x)/len(x)}")
 
 # Create figure for x
 plt.figure()
@@ -31,7 +32,7 @@ plt.hist(x, bins=100, density=True, label='x (Gaussian)')
 plt.xlabel('Value')
 plt.ylabel('Probability Density')
 plt.legend()
-plt.savefig("ps1-2-c-1.png")
+plt.savefig("./output/ps1-2-c-1.png")
 plt.close()
 
 # Create figure for z
@@ -40,7 +41,7 @@ plt.hist(z, bins=100, density=True, label='z (Uniform)')
 plt.xlabel('Value')
 plt.ylabel('Probability Density')
 plt.legend()
-plt.savefig("ps1-2-c-2.png")
+plt.savefig("./output/ps1-2-c-2.png")
 plt.close()
 
 # Add 2 to x using loop
