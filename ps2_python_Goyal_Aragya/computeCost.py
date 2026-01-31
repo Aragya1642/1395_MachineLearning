@@ -5,7 +5,7 @@ def computeCost(X, y, theta):
     m = X.shape[0]
 
     # Using theta and X, calculate hypothesis
-    hypothesis = np.transpose(X) @ theta
+    hypothesis = X @ theta
 
     # Calculate error using hypothesis and true value
     err = hypothesis - y
