@@ -1,6 +1,6 @@
 import numpy as np
 
-def nomalEqn(X, y):
+def normalEqn(X, y):
     # Calculate X_transpose
     X_transpose = np.transpose(X)
 
