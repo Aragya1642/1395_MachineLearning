@@ -40,7 +40,7 @@ plt.plot(range(num_iters), cost_history, 'b-')
 plt.xlabel('Number of Iterations')
 plt.ylabel('Cost')
 plt.title('Cost History Over Iterations')
-plt.savefig('ps2-1-d.png')
+plt.savefig('./output/ps2-1-d.png')
 plt.show()
 
 # Normal Equation Verification
@@ -57,33 +57,107 @@ data = np.genfromtxt(path, delimiter=',', skip_header=1)
 
 # Get rid of the dates
 data = data[:, 1:]
+print("NaNs per column:", np.isnan(data).sum(axis=0))
+# Remove rows with NaN values
+data = data[~np.isnan(data).any(axis=1)]
+print("Data shape after removing NaNs:", data.shape)
 
 # Visualize the data
 # Average Daily Wind Speed vs. Energy Consumption
 plt.plot(data[:, 0], data[:, -1], 'rx')
-plt.xlabel('Average Daily Wind Speed')
-plt.ylabel('Energy Consumption')
-plt.title('Average Daily Wind Speed vs. Energy Consumption')
-plt.savefig('ps2-2-b-1.png')
+plt.xlabel('Average Daily Wind Speed (m/s)')
+plt.ylabel('Energy Consumption (kWh)')
+plt.title('Energy Consumption vs. Average Daily Wind Speed')
+plt.savefig('./output/ps2-2-b-1.png')
 plt.show()
 # Daily percipitation vs. Energy Consumption
 plt.plot(data[:, 1], data[:, -1], 'rx')
-plt.xlabel('Daily Percipitation')
-plt.ylabel('Energy Consumption')
-plt.title('Daily Percipitation vs. Energy Consumption')
-plt.savefig('ps2-2-b-2.png')
+plt.xlabel('Daily Percipitation (mm)')
+plt.ylabel('Energy Consumption (kWh)')
+plt.title('Energy Consumption vs. Daily Percipitation')
+plt.savefig('./output/ps2-2-b-2.png')
 plt.show()
 # Daily max temperature vs. Energy Consumption
 plt.plot(data[:, 2], data[:, -1], 'rx')
-plt.xlabel('Daily Max Temperature')
-plt.ylabel('Energy Consumption')
-plt.title('Daily Max Temperature vs. Energy Consumption')
-plt.savefig('ps2-2-b-3.png')
+plt.xlabel('Daily Max Temperature (°C)')
+plt.ylabel('Energy Consumption (kWh)')
+plt.title('Energy Consumption vs. Daily Max Temperature')
+plt.savefig('./output/ps2-2-b-3.png')
 plt.show()
 # Daily min temperature vs. Energy Consumption
 plt.plot(data[:, 3], data[:, -1], 'rx')
-plt.xlabel('Daily Min Temperature')
-plt.ylabel('Energy Consumption')
-plt.title('Daily Min Temperature vs. Energy Consumption')
-plt.savefig('ps2-2-b-4.png')
+plt.xlabel('Daily Min Temperature (°C)')
+plt.ylabel('Energy Consumption (kWh)')
+plt.title('Energy Consumption vs. Daily Min Temperature')
+plt.savefig('./output/ps2-2-b-4.png')
 plt.show()
+
+# Preprocess the data
+# Get number of training examples
+m = data.shape[0]
+print("Number of training examples:", m)
+# Perform standardization
+data_mean = np.mean(data[:, :-1], axis=0)
+data_std = np.std(data[:, :-1], axis=0)
+data[:, :-1] = (data[:, :-1] - data_mean) / data_std
+print("Data mean (first 5 features):", data_mean)
+print("Data std (first 5 features):", data_std)
+# Add bias term
+X = np.hstack((np.ones((m, 1)), data[:, :-1]))
+y = data[:, -1].reshape(m, 1)
+print(X[:5, :])
+# Split the data into training and test sets randomly
+np.random.seed(D)
+row_indices = np.random.permutation(m)
+X_shuffled = X[row_indices]
+y_shuffled = y[row_indices]
+split_index = int(0.8 * m)
+X_train = X_shuffled[:split_index]
+y_train = y_shuffled[:split_index]
+X_test = X_shuffled[split_index:]
+y_test = y_shuffled[split_index:]
+print("Training set size:", X_train.shape[0])
+print("Test set size:", X_test.shape[0])
+
+# Univariate Linear Regression using Gradient Descent
+# Using only Daily Min Temperature (4th feature)
+X_univariate = X_train[:, [0, 4]]
+alpha_univariate = 0.01
+iterations_univariate = 500 + (D*5)
+theta_init_univariate = np.array([[0], [0]])
+theta_univariate, cost_history_univariate = gradientDescent(X_univariate, y_train, theta_init_univariate, alpha_univariate, iterations_univariate)
+# Plot the cost history for univariate regression
+plt.plot(range(iterations_univariate), cost_history_univariate, 'b-')
+plt.xlabel('Number of Iterations')
+plt.ylabel('Cost')
+plt.title('Cost History Over Iterations')
+plt.savefig('./output/ps2-2-d-1.png')
+plt.show()
+# Plot linear regression line on training data
+plt.plot(X_train[:, 4], y_train, 'rx', label='Training Data')
+plt.plot(X_train[:, 4], X_univariate @ theta_univariate, 'b-', label='Linear Regression Fit')
+plt.xlabel('Daily Min Temperature (°C)')
+plt.ylabel('Energy Consumption (kWh)')
+plt.title('Univariate Linear Regression Fit')
+plt.legend()
+plt.savefig('./output/ps2-2-d-2.png')
+plt.show()
+
+# Multivariate Linear Regression using Gradient Descent
+alpha_multivariate = 0.1
+iterations_multivariate = 750 + (D*5)
+theta_init_multivariate = np.zeros((X_train.shape[1], 1))
+theta_multivariate, cost_history_multivariate = gradientDescent(X_train, y_train, theta_init_multivariate, alpha_multivariate, iterations_multivariate)
+theta_multivariate_normal = normalEqn(X_train, y_train)
+# Compare theta from gradient descent and normal equation
+print("Theta from Gradient Descent (Multivariate):\n", theta_multivariate)
+print("Theta from Normal Equation (Multivariate):\n", theta_multivariate_normal)
+# Plot the cost history for multivariate regression gradient descent
+plt.plot(range(iterations_multivariate), cost_history_multivariate, 'b-')
+plt.xlabel('Number of Iterations')
+plt.ylabel('Cost')
+plt.title('Cost History Over Iterations')
+plt.savefig('./output/ps2-2-e-1.png')
+plt.show()
+
+# Model evaluation and comparison
