@@ -100,12 +100,11 @@ print("Number of training examples:", m)
 data_mean = np.mean(data[:, :-1], axis=0)
 data_std = np.std(data[:, :-1], axis=0)
 data[:, :-1] = (data[:, :-1] - data_mean) / data_std
-print("Data mean (first 5 features):", data_mean)
-print("Data std (first 5 features):", data_std)
+print("Data means:", data_mean)
+print("Data stds:", data_std)
 # Add bias term
 X = np.hstack((np.ones((m, 1)), data[:, :-1]))
 y = data[:, -1].reshape(m, 1)
-print(X[:5, :])
 # Split the data into training and test sets randomly
 np.random.seed(D)
 row_indices = np.random.permutation(m)
@@ -116,8 +115,10 @@ X_train = X_shuffled[:split_index]
 y_train = y_shuffled[:split_index]
 X_test = X_shuffled[split_index:]
 y_test = y_shuffled[split_index:]
-print("Training set size:", X_train.shape[0])
-print("Test set size:", X_test.shape[0])
+print("X_train size:", X_train.shape)
+print("y_train size:", y_train.shape)
+print("X_test size:", X_test.shape)
+print("y_test size:", y_test.shape)
 
 # Univariate Linear Regression using Gradient Descent
 # Using only Daily Min Temperature (4th feature)
@@ -144,7 +145,7 @@ plt.savefig('./output/ps2-2-d-2.png')
 plt.show()
 
 # Multivariate Linear Regression using Gradient Descent
-alpha_multivariate = 0.1
+alpha_multivariate = 0.01
 iterations_multivariate = 750 + (D*5)
 theta_init_multivariate = np.zeros((X_train.shape[1], 1))
 theta_multivariate, cost_history_multivariate = gradientDescent(X_train, y_train, theta_init_multivariate, alpha_multivariate, iterations_multivariate)
@@ -161,3 +162,17 @@ plt.savefig('./output/ps2-2-e-1.png')
 plt.show()
 
 # Model evaluation and comparison
+# Predict on test data using multivariate theta
+y_predict = X_test @ theta_multivariate
+# Calculate mean squared error on test data
+mean_squared_error = 2*computeCost(X_test, y_test, theta_multivariate)
+print("Mean Squared Error (Gradient Descent):", mean_squared_error)
+# Predict on test data using multivariate theta from normal equation
+y_predict_normal = X_test @ theta_multivariate_normal
+# Calculate mean squared error on test data
+mean_squared_error_normal = 2*computeCost(X_test, y_test, theta_multivariate_normal)
+print("Mean Squared Error (Normal Equation):", mean_squared_error_normal)
+# Calculate MSE for univariate model
+y_predict_univariate = X_test[:, [0, 4]] @ theta_univariate
+mean_squared_error_univariate = 2*computeCost(X_test[:, [0, 4]], y_test, theta_univariate)
+print("Mean Squared Error (Univariate):", mean_squared_error_univariate)
