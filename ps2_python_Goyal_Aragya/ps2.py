@@ -27,6 +27,7 @@ y = np.array([
 
 # Cost Computation Verification
 computeCost_result = computeCost(X, y, np.array([[0.5], [2], [1]]))
+print("Computed Cost J:", computeCost_result)
 
 # Gradient Descent Verification
 alpha = 0.01
@@ -123,10 +124,11 @@ print("y_test size:", y_test.shape)
 # Univariate Linear Regression using Gradient Descent
 # Using only Daily Min Temperature (4th feature)
 X_univariate = X_train[:, [0, 4]]
-alpha_univariate = 0.01
+alpha_univariate = 0.5
 iterations_univariate = 500 + (D*5)
 theta_init_univariate = np.array([[0], [0]])
 theta_univariate, cost_history_univariate = gradientDescent(X_univariate, y_train, theta_init_univariate, alpha_univariate, iterations_univariate)
+print("Theta from Gradient Descent (Univariate):\n", theta_univariate)
 # Plot the cost history for univariate regression
 plt.plot(range(iterations_univariate), cost_history_univariate, 'b-')
 plt.xlabel('Number of Iterations')
@@ -144,8 +146,8 @@ plt.legend()
 plt.savefig('./output/ps2-2-d-2.png')
 plt.show()
 
-# Multivariate Linear Regression using Gradient Descent
-alpha_multivariate = 0.01
+# Multivariate Linear Regression
+alpha_multivariate = 0.5
 iterations_multivariate = 750 + (D*5)
 theta_init_multivariate = np.zeros((X_train.shape[1], 1))
 theta_multivariate, cost_history_multivariate = gradientDescent(X_train, y_train, theta_init_multivariate, alpha_multivariate, iterations_multivariate)
@@ -178,7 +180,7 @@ mean_squared_error_univariate = 2*computeCost(X_test[:, [0, 4]], y_test, theta_u
 print("Mean Squared Error (Univariate):", mean_squared_error_univariate)
 
 # Learning rate analysis
-learning_rates = [0.001, 0.05, 0.865, 1]
+learning_rates = [0.001, 0.5, 0.865, 1]
 for lr in learning_rates:
     theta_init_lr = np.zeros((X_train.shape[1], 1))
     iterations_lr = 300
@@ -189,4 +191,5 @@ for lr in learning_rates:
     plt.title('Learning Rate Analysis')
     plt.legend()
     plt.savefig(f'./output/ps2-2-g-{learning_rates.index(lr)}.png')
+    plt.show()
     plt.close()
