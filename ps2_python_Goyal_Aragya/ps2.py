@@ -176,3 +176,17 @@ print("Mean Squared Error (Normal Equation):", mean_squared_error_normal)
 y_predict_univariate = X_test[:, [0, 4]] @ theta_univariate
 mean_squared_error_univariate = 2*computeCost(X_test[:, [0, 4]], y_test, theta_univariate)
 print("Mean Squared Error (Univariate):", mean_squared_error_univariate)
+
+# Learning rate analysis
+learning_rates = [0.001, 0.05, 0.865, 1]
+for lr in learning_rates:
+    theta_init_lr = np.zeros((X_train.shape[1], 1))
+    iterations_lr = 300
+    theta_lr, cost_history_lr = gradientDescent(X_train, y_train, theta_init_lr, lr, iterations_lr)
+    plt.plot(range(iterations_lr), cost_history_lr, label=f'Alpha={lr}')
+    plt.xlabel('Number of Iterations')
+    plt.ylabel('Cost')
+    plt.title('Learning Rate Analysis')
+    plt.legend()
+    plt.savefig(f'./output/ps2-2-g-{learning_rates.index(lr)}.png')
+    plt.close()
