@@ -1,8 +1,6 @@
 # Import Packages
 import numpy as np
 import matplotlib.pyplot as plt
-import kagglehub
-import os
 from computeCost import computeCost
 from gradientDescent import gradientDescent
 from normalEqn import normalEqn
@@ -49,9 +47,8 @@ theta_normal = normalEqn(X, y)
 print("Theta from Normal Equation:\n", theta_normal)
 
 # Real Dataset Application - https://www.kaggle.com/datasets/sudhirsingh27/electricity-consumption-based-on-weather-data/data
-# Download latest version
-path = kagglehub.dataset_download("sudhirsingh27/electricity-consumption-based-on-weather-data")
-path = os.path.join(path, "electricity_consumption_based_weather_dataset.csv")
+# Set path to dataset
+path = "./input/electricity_consumption_based_weather_dataset.csv"
 
 # Load dataset
 data = np.genfromtxt(path, delimiter=',', skip_header=1)
@@ -190,6 +187,6 @@ for lr in learning_rates:
     plt.ylabel('Cost')
     plt.title('Learning Rate Analysis')
     plt.legend()
-    plt.savefig(f'./output/ps2-2-g-{learning_rates.index(lr)}.png')
+    plt.savefig(f'./output/ps2-2-g-{learning_rates.index(lr)+1}.png')
     plt.show()
     plt.close()
